@@ -56,9 +56,9 @@ import { SQL } from 'some-sql-tag-library';
 class PostsController {
   async getPosts(userId: number) {
     const posts = await SQL`
-      SELECT posts.id, posts.text, posts.created_at AS created, users.name AS author 
+      select posts.id, posts.text, posts.created_at AS created, users.name AS author 
       FROM posts LEFT JOIN users ON users.id = posts.author_id
-      WHERE posts.author_id = ${userId}
+      where posts.author_id = ${userId}
       ORDER BY posts.created_at`.execute();
     
     // ...
