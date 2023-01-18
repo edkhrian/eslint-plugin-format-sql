@@ -6,9 +6,13 @@ module.exports = {
         'pg-formatter/format': [
           'warn',
           {
-            spaces: 2,
-            keywordCase: 'uppercase',
-            functionCase: 'lowercase',
+            tags: ['SQL', 'sql'],
+            startIndent: 2,
+            formatter: {
+              spaces: 2,
+              keywordCase: 'uppercase',
+              functionCase: 'lowercase',
+            },
           },
         ],
       },

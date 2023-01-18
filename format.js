@@ -4,7 +4,14 @@ const astring = require('astring');
 const formatter = require('pg-formatter');
 
 const cache = {
+  id: '',
   values: [],
+  prepare(id) {
+    if (this.id !== id) {
+      this.values = [];
+    }
+    this.id = id;
+  },
   get(key) {
     const item = this.values.find(function (item) {
       return item.key === key;
@@ -22,6 +29,8 @@ module.exports = {
   create(context) {
     const ruleOptions = (context.options && context.options[0]) || {};
     const tags = ruleOptions.tags || ['SQL', 'sql'];
+    const startIndent = ruleOptions.startIndent || 0;
+    const formatterOptions = ruleOptions.formatter || {};
     const expressionPlaceholder = '"pg-formatter-placeholder"';
 
     return {
@@ -36,10 +45,12 @@ module.exports = {
 
         if (!literal) return;
 
+        cache.prepare(JSON.stringify(formatterOptions));
+
         // check cache and format
         let formatted = cache.get(literal);
         if (!formatted) {
-          formatted = formatter.format(literal, ruleOptions);
+          formatted = formatter.format(literal, formatterOptions);
           cache.add(literal, formatted);
         }
         formatted = formatted.replace(/^\s+|\s+$/g, '');
@@ -51,7 +62,7 @@ module.exports = {
             firstNodeInLine = firstNodeInLine.parent;
           }
           const parentIndentation = ' '.repeat(firstNodeInLine.loc.start.column);
-          const extraIndentation = ' '.repeat(ruleOptions.spaces || 0);
+          const extraIndentation = ' '.repeat(startIndent || 0);
 
           formatted = formatted.replace(/\n/g, `\n${parentIndentation + extraIndentation}`);
           formatted = `\n${parentIndentation + extraIndentation}${formatted}\n${parentIndentation}`;

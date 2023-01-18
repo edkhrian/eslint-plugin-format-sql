@@ -1,4 +1,3 @@
-bla bla
 
 # Installation
 
