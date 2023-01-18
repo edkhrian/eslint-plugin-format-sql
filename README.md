@@ -2,10 +2,10 @@
 
 [![NPM][npm-icon]][npm-url]
 
-ESLint plugin to format SQL queries inside any SQL template tag using [pg-formatter](https://github.com/gajus/pg-formatter). This plugin keeps code's indent during a formation.
+ESLint plugin to format SQL queries inside any SQL template tag using [pg-formatter](https://github.com/gajus/pg-formatter). One of the key features of this plugin is keeping code's indent after a formation.
 
 ## Installation
-Install the plugin first
+Install the plugin first:
 ```bash
 npm install --save-dev eslint-plugin-pg-formatter
 ```
