@@ -39,8 +39,8 @@ In case no options is provided for the rule then default ones will be used:
   "startIndent": 2,
   "formatter": {
     "spaces": 2,
-    "keywordCase": 'uppercase',
-    "functionCase": 'lowercase',
+    "keywordCase": "uppercase",
+    "functionCase": "lowercase",
   },
 }
 ```
