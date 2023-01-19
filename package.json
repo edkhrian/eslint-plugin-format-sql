@@ -1,13 +1,22 @@
 {
   "name": "eslint-plugin-pg-formatter",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "ESLint plugin to format SQL query in template literals using pg-formatter",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://edkhrian@github.com/edkhrian/eslint-plugin-pg-formatter.git"
   },
-  "keywords": ["pg", "pg-formatter", "formatter", "sql", "prettify", "pretty", "eslint", "plugin"],
+  "keywords": [
+    "pg",
+    "pg-formatter",
+    "formatter",
+    "sql",
+    "prettify",
+    "pretty",
+    "eslint",
+    "plugin"
+  ],
   "author": "Eduard Khachatrian",
   "license": "ISC",
   "bugs": {
