@@ -30,12 +30,12 @@ Then add this plugin to eslint config in `extends` section and configure rule fo
   },
 }
 ```
-You can check available options for `formatter` field [here](https://github.com/gajus/pg-formatter).
+You can check available options for `formatter` object [here](https://github.com/gajus/pg-formatter).
 
 In case no options is provided for the rule then default ones will be used:
 ```json5
 {
-  "tags": ["SQL", "sql"],
+  "tags": ["SQL"],
   "startIndent": 2,
   "formatter": {
     "spaces": 2,
@@ -51,7 +51,10 @@ Example of formation with default options.
 
 Before:
 ```typescript
-import { SQL } from 'some-sql-tag-library';
+import { SQLFactory } from 'pg-sql-template'; // or another sql template library
+import { client } from './client';
+
+const SQL = SQLFactory({ client });
 
 class PostsController {
   async getPosts(userId: number) {
@@ -59,7 +62,7 @@ class PostsController {
       select posts.id, posts.text, posts.created_at AS created, users.name AS author 
       FROM posts LEFT JOIN users ON users.id = posts.author_id
       where posts.author_id = ${userId}
-      ORDER BY posts.created_at`.execute();
+      ORDER BY posts.created_at`.many();
     
     // ...
   }
@@ -68,7 +71,10 @@ class PostsController {
 
 After `--fix`:
 ```typescript
-import { SQL } from 'some-sql-tag-library';
+import { SQLFactory } from 'pg-sql-template'; //  or another sql template library
+import { client } from './client';
+
+const SQL = SQLFactory({ client });
 
 class PostsController {
   async getPosts(userId: number) {
@@ -85,7 +91,7 @@ class PostsController {
         posts.author_id = ${userId}
       ORDER BY
         posts.created_at
-    `.execute();
+    `.many();
     
     // ...
   }
