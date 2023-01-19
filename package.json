@@ -8,7 +8,7 @@
     "url": "git+https://edkhrian@github.com/edkhrian/eslint-plugin-pg-formatter.git"
   },
   "keywords": ["pg", "pg-formatter", "formatter", "sql", "prettify", "pretty", "eslint", "plugin"],
-  "author": "",
+  "author": "Eduard Khachatrian",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/edkhrian/eslint-plugin-pg-formatter/issues"
