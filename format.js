@@ -31,7 +31,7 @@ module.exports = {
     const tags = ruleOptions.tags || ['SQL', 'sql'];
     const startIndent = ruleOptions.startIndent || 0;
     const formatterOptions = ruleOptions.formatter || {};
-    const expressionPlaceholder = '"pg-formatter-placeholder"';
+    const expressionPlaceholder = '"format-sql-placeholder"';
 
     return {
       TemplateLiteral(node) {

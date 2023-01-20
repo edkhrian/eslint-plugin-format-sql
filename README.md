@@ -16,10 +16,10 @@ Then add this plugin to eslint config in `extends` section and configure rule fo
 {
   "extends": [
     // ...
-    "plugin:pg-formatter/format"
+    "plugin:format-sql/format"
   ],
   "rules": {
-    "pg-formatter/format": ["warn", {
+    "format-sql/format": ["warn", {
       "tags": ["SQL", "sql"], // names of SQL template tags to parse their literals
       "startIndent": 2, // extra spaces to indent for each query line
       "formatter": { 

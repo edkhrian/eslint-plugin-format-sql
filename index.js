@@ -1,12 +1,12 @@
 module.exports = {
   configs: {
     format: {
-      plugins: ['pg-formatter'],
+      plugins: ['format-sql'],
       rules: {
-        'pg-formatter/format': [
+        'format-sql/format': [
           'warn',
           {
-            tags: ['SQL', 'sql'],
+            tags: ['SQL'],
             startIndent: 2,
             formatter: {
               spaces: 2,
