@@ -64,7 +64,8 @@ module.exports = {
           const parentIndentation = ' '.repeat(firstNodeInLine.loc.start.column);
           const extraIndentation = ' '.repeat(startIndent || 0);
 
-          formatted = formatted.replace(/\n/g, `\n${parentIndentation + extraIndentation}`);
+          formatted = formatted.replace(/\n/g, `\n${parentIndentation + extraIndentation}`).replace(/\n +\n/g, '\n\n');
+
           formatted = `\n${parentIndentation + extraIndentation}${formatted}\n${parentIndentation}`;
         }
 
