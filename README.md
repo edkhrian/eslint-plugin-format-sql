@@ -1,4 +1,4 @@
-# eslint-plugin-pg-formatter
+# eslint-plugin-format-sql
 
 [![NPM][npm-icon]][npm-url]
 
@@ -7,7 +7,7 @@ ESLint plugin to format SQL queries inside any SQL template tag using [pg-format
 ## Installation
 Install the plugin first:
 ```bash
-npm install --save-dev eslint-plugin-pg-formatter
+npm install --save-dev eslint-plugin-format-sql
 ```
 
 Then add this plugin to eslint config in `extends` section and configure rule for your need:
@@ -99,5 +99,5 @@ class PostsController {
 
 ```
 
-[npm-url]: https://www.npmjs.com/package/eslint-plugin-pg-formatter
-[npm-icon]: https://img.shields.io/npm/v/eslint-plugin-pg-formatter.svg?logo=npm&logoColor=fff&label=NPM+package&color=limegreen
+[npm-url]: https://www.npmjs.com/package/eslint-plugin-format-sql
+[npm-icon]: https://img.shields.io/npm/v/eslint-plugin-format-sql.svg?logo=npm&logoColor=fff&label=NPM+package&color=limegreen
