@@ -2,7 +2,7 @@
 
 [![NPM][npm-icon]][npm-url]
 
-ESLint plugin to format SQL queries inside any SQL template tag using [pg-formatter](https://github.com/gajus/pg-formatter). One of the key features of this plugin is keeping code's indent after a formation.
+ESLint plugin to format SQL queries inside any SQL template tag using [@sqltools/formatter][format-library-url]. One of the key features of this plugin is keeping code's indent after a formation.
 
 ## Installation
 Install the plugin first:
@@ -21,27 +21,23 @@ Then add this plugin to eslint config in `extends` section and configure rule fo
   "rules": {
     "format-sql/format": ["warn", {
       "tags": ["SQL", "sql"], // names of SQL template tags to parse their literals
-      "startIndent": 2, // extra spaces to indent for each query line
+      "startIndent": 0, // extra spaces to indent for each query line
       "formatter": { 
-        // pg-formatter options
+        // @sqltools/formatter options
       },
     }],
     // ...
   },
 }
 ```
-You can check available options for `formatter` object [here](https://github.com/gajus/pg-formatter).
+You can check available options for `formatter` object [here][format-library-url].
 
-In case no options is provided for the rule then default ones will be used:
+In case no options is provided for the rule then default params will be used:
 ```json5
 {
-  "tags": ["SQL"],
-  "startIndent": 2,
-  "formatter": {
-    "spaces": 2,
-    "keywordCase": "uppercase",
-    "functionCase": "lowercase",
-  },
+  "tags": ["SQL", 'sql'],
+  "startIndent": 0,
+  "formatter": {},
 }
 ```
 
@@ -59,9 +55,9 @@ const SQL = SQLFactory({ client });
 class PostsController {
   async getPosts(userId: number) {
     const posts = await SQL`
-      select posts.id, posts.text, posts.created_at AS created, users.name AS author 
+      SELECT posts.id, posts.text, posts.created_at AS created, users.name AS author 
       FROM posts LEFT JOIN users ON users.id = posts.author_id
-      where posts.author_id = ${userId}
+      WHERE posts.author_id = ${userId}
       ORDER BY posts.created_at`.many();
     
     // ...
@@ -79,18 +75,14 @@ const SQL = SQLFactory({ client });
 class PostsController {
   async getPosts(userId: number) {
     const posts = await SQL`
-      SELECT
-        posts.id,
-        posts.text,
-        posts.created_at AS created,
-        users.name AS author
-      FROM
-        posts
-        LEFT JOIN users ON users.id = posts.author_id
-      WHERE
-        posts.author_id = ${userId}
-      ORDER BY
-        posts.created_at
+    SELECT posts.id,
+      posts.text,
+      posts.created_at AS created,
+      users.name AS author
+    FROM posts
+      LEFT JOIN users ON users.id = posts.author_id
+    WHERE posts.author_id = ${userId}
+    ORDER BY posts.created_at
     `.many();
     
     // ...
@@ -101,3 +93,4 @@ class PostsController {
 
 [npm-url]: https://www.npmjs.com/package/eslint-plugin-format-sql
 [npm-icon]: https://img.shields.io/npm/v/eslint-plugin-format-sql.svg?logo=npm&logoColor=fff&label=NPM+package&color=limegreen
+[format-library-url]: https://www.npmjs.com/package/@sqltools/formatter

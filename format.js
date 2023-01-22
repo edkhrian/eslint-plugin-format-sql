@@ -1,28 +1,7 @@
 'use strict';
 
 const astring = require('astring');
-const formatter = require('pg-formatter');
-
-const cache = {
-  id: '',
-  values: [],
-  prepare(id) {
-    if (this.id !== id) {
-      this.values = [];
-    }
-    this.id = id;
-  },
-  get(key) {
-    const item = this.values.find(function (item) {
-      return item.key === key;
-    });
-    return item ? item.value : undefined;
-  },
-  add(key, value) {
-    this.values.push({ key, value });
-    this.values = this.values.slice(-1000);
-  },
-};
+const formatter = require('@sqltools/formatter');
 
 module.exports = {
   meta: { fixable: 'code' },
@@ -45,14 +24,7 @@ module.exports = {
 
         if (!literal) return;
 
-        cache.prepare(JSON.stringify(formatterOptions));
-
-        // check cache and format
-        let formatted = cache.get(literal);
-        if (!formatted) {
-          formatted = formatter.format(literal, formatterOptions);
-          cache.add(literal, formatted);
-        }
+        let formatted = formatter.format(literal, formatterOptions);
         formatted = formatted.replace(/^\s+|\s+$/g, '');
 
         // keep parent indentation
