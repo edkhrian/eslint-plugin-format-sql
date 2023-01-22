@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-format-sql",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "ESLint plugin to format SQL query in template literals",
   "main": "index.js",
   "repository": {
