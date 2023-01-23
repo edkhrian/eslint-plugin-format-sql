@@ -2,7 +2,7 @@
 
 [![NPM][npm-icon]][npm-url]
 
-ESLint plugin to format SQL queries inside any SQL template tag using [@sqltools/formatter][format-library-url]. One of the key features of this plugin is keeping code's indent after a formation.
+ESLint plugin to format SQL queries inside any SQL template tag. It works on top of the [sql-formatter](https://github.com/sql-formatter-org/sql-formatter) with some improvements and post-formations.
 
 ## Installation
 Install the plugin first:
@@ -21,23 +21,23 @@ Then add this plugin to eslint config in `extends` section and configure rule fo
   "rules": {
     "format-sql/format": ["warn", {
       "tags": ["SQL", "sql"], // names of SQL template tags to parse their literals
-      "startIndent": 0, // extra spaces to indent for each query line
-      "formatter": { 
-        // @sqltools/formatter options
-      },
+      "language": "postgresql", // language name
+      "startSpaces": 0, // extra spaces to indent for each query line in first column of a query
+      "spaces": 2, // amount of indentation to use in statements
     }],
     // ...
   },
 }
 ```
-You can check available options for `formatter` object [here][format-library-url].
+Available options for language: `sql`, `postgresql`, `db2`, `hive`, `mariadb`, `mysql`, `n1ql`, `plsql`, `bigquery`, `redshift`, `singlestoredb`, `spark`, `sqlite`, `snowflake`,  `transactsql`, `trino`,
 
 In case no options is provided for the rule then default params will be used:
 ```json5
 {
-  "tags": ["SQL", 'sql'],
-  "startIndent": 0,
-  "formatter": {},
+  language: 'postgresql',
+  tags: ['SQL', 'sql'],
+  startSpaces: 2,
+  spaces: 2,
 }
 ```
 
@@ -75,14 +75,14 @@ const SQL = SQLFactory({ client });
 class PostsController {
   async getPosts(userId: number) {
     const posts = await SQL`
-    SELECT posts.id,
-      posts.text,
-      posts.created_at AS created,
-      users.name AS author
-    FROM posts
-      LEFT JOIN users ON users.id = posts.author_id
-    WHERE posts.author_id = ${userId}
-    ORDER BY posts.created_at
+      SELECT posts.id,
+        posts.text,
+        posts.created_at AS created,
+        users.name AS author
+      FROM posts
+        LEFT JOIN users ON users.id = posts.author_id
+      WHERE posts.author_id = ${userId}
+      ORDER BY posts.created_at
     `.many();
     
     // ...
@@ -93,4 +93,3 @@ class PostsController {
 
 [npm-url]: https://www.npmjs.com/package/eslint-plugin-format-sql
 [npm-icon]: https://img.shields.io/npm/v/eslint-plugin-format-sql.svg?logo=npm&logoColor=fff&label=NPM+package&color=limegreen
-[format-library-url]: https://www.npmjs.com/package/@sqltools/formatter
