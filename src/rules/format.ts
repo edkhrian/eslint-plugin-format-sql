@@ -1,34 +1,32 @@
-'use strict';
+import { generate } from 'astring';
+import { formatter } from './formatter';
 
-const astring = require('astring');
-const formatter = require('@sqltools/formatter');
+interface RuleOptions {
+  tags?: string[];
+  spaces?: number;
+  startSpaces?: number;
+}
 
-module.exports = {
+export const format = {
   meta: { fixable: 'code' },
-  create(context) {
-    const ruleOptions = (context.options && context.options[0]) || {};
+  create(context: any) {
+    const ruleOptions: RuleOptions = (context.options && context.options[0]) || {};
     const tags = ruleOptions.tags || ['SQL', 'sql'];
-    const startIndent = ruleOptions.startIndent || 0;
-    const formatterOptions = ruleOptions.formatter || {};
+    const startIndent = ruleOptions.startSpaces || 0;
     const expressionPlaceholder = '"format-sql-placeholder"';
 
     return {
-      TemplateLiteral(node) {
-        if (!node.parent.tag || tags.indexOf(node.parent.tag.name) === -1) return;
+      TemplateLiteral(node: any) {
+        if (!node.parent.tag || !tags.includes(node.parent.tag.name)) return;
 
-        const literal = node.quasis
-          .map(function (quasi) {
-            return quasi.value.raw;
-          })
-          .join(expressionPlaceholder);
+        const literal = node.quasis.map((quasi: any) => quasi.value.raw).join(expressionPlaceholder);
 
         if (!literal) return;
 
-        let formatted = formatter.format(literal, formatterOptions);
-        formatted = formatted.replace(/^\s+|\s+$/g, '');
+        let formatted = formatter.format(literal, ruleOptions);
 
         // keep parent indentation
-        if (formatted.indexOf('\n') >= 0) {
+        if (formatted.includes('\n')) {
           let firstNodeInLine = node;
           while (firstNodeInLine.parent && firstNodeInLine.loc.start.line === firstNodeInLine.parent.loc.start.line) {
             firstNodeInLine = firstNodeInLine.parent;
@@ -37,15 +35,14 @@ module.exports = {
           const extraIndentation = ' '.repeat(startIndent || 0);
 
           formatted = formatted.replace(/\n/g, `\n${parentIndentation + extraIndentation}`).replace(/\n +\n/g, '\n\n');
-
           formatted = `\n${parentIndentation + extraIndentation}${formatted}\n${parentIndentation}`;
         }
 
         if (literal !== formatted) {
           context.report({
-            fix: function (fixer) {
-              const fixed = node.expressions.reduce(function (str, expression) {
-                return str.replace(expressionPlaceholder, '${' + astring.generate(expression) + '}');
+            fix(fixer: any) {
+              const fixed = node.expressions.reduce((str: string, expression: any) => {
+                return str.replace(expressionPlaceholder, '${' + generate(expression) + '}');
               }, formatted);
 
               return fixer.replaceText(node, '`' + fixed + '`');
