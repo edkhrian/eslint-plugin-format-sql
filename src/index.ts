@@ -1,19 +1,19 @@
 import { format } from './rules';
 
-export default {
-  configs: {
-    format: {
-      plugins: ['format-sql'],
-      rules: {
-        'format-sql/format': [
-          'warn',
-          {
-            startSpaces: 2,
-            spaces: 2,
-          },
-        ],
-      },
+export const configs = {
+  format: {
+    plugins: ['format-sql'],
+    rules: {
+      'format-sql/format': [
+        'warn',
+        {
+          language: 'postgresql',
+          tags: ['SQL', 'sql'],
+          startSpaces: 2,
+          spaces: 2,
+        },
+      ],
     },
   },
-  rules: { format },
 };
+export const rules = { format };

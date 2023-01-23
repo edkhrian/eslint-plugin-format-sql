@@ -12,7 +12,7 @@ export const format = {
   create(context: any) {
     const ruleOptions: RuleOptions = (context.options && context.options[0]) || {};
     const tags = ruleOptions.tags || ['SQL', 'sql'];
-    const startIndent = ruleOptions.startSpaces || 0;
+    const startIndent = ruleOptions.startSpaces || 2;
     const expressionPlaceholder = '"format-sql-placeholder"';
 
     return {

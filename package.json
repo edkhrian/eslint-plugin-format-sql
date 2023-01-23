@@ -2,8 +2,10 @@
   "name": "eslint-plugin-format-sql",
   "version": "1.0.9",
   "description": "ESLint plugin to format SQL query in template literals",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "./lib/index.js",
+  "files": [
+    "./lib/**/*"
+  ],
   "scripts": {
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
@@ -19,13 +21,12 @@
     "url": "git+https://edkhrian@github.com/edkhrian/eslint-plugin-format-sql.git"
   },
   "keywords": [
-    "pg",
-    "formatter",
     "sql",
     "prettify",
     "pretty",
     "eslint",
     "plugin",
+    "formatter",
     "sql-formatter"
   ],
   "author": "Eduard Khachatrian",
@@ -38,9 +39,6 @@
     "astring": "^1.8.4",
     "sql-formatter": "^12.0.6"
   },
-  "files": [
-    "lib/**/*"
-  ],
   "devDependencies": {
     "@types/node": "^18.11.18",
     "prettier": "^2.8.3",
