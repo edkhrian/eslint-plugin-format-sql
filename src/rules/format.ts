@@ -17,7 +17,7 @@ export const format = {
 
     return {
       TemplateLiteral(node: any) {
-        if (!node.parent.tag || !tags.includes(node.parent.tag.name)) return;
+        if (!node.parent.tag || !tags.includes(generate(node.parent.tag))) return;
 
         const literal = node.quasis.map((quasi: any) => quasi.value.raw).join(expressionPlaceholder);
 
