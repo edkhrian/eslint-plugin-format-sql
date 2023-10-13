@@ -12,7 +12,7 @@ export const format = {
   create(context: any) {
     const ruleOptions: RuleOptions = (context.options && context.options[0]) || {};
     const tags = ruleOptions.tags || ['SQL', 'sql'];
-    const startIndent = ruleOptions.startSpaces || 2;
+    const startIndent = ruleOptions.startSpaces ?? 2;
     const expressionPlaceholder = '"format-sql-placeholder"';
 
     return {
@@ -22,20 +22,32 @@ export const format = {
         const literal = node.quasis.map((quasi: any) => quasi.value.raw).join(expressionPlaceholder);
 
         if (!literal) return;
+        const eolMatch = literal.match(/\r?\n/u);
+        const [eol = '\n'] = eolMatch || [];
 
         let formatted = formatter.format(literal, ruleOptions);
 
         // keep parent indentation
-        if (formatted.includes('\n')) {
+        if (formatted.includes(eol)) {
           let firstNodeInLine = node;
           while (firstNodeInLine.parent && firstNodeInLine.loc.start.line === firstNodeInLine.parent.loc.start.line) {
             firstNodeInLine = firstNodeInLine.parent;
           }
-          const parentIndentation = ' '.repeat(firstNodeInLine.loc.start.column);
-          const extraIndentation = ' '.repeat(startIndent || 0);
+          // Get the margin at the start of the line
+          const sourceCode = context.sourceCode;
+          const priorLine = sourceCode.lines[firstNodeInLine.loc.start.line - 1];
+          const priorMarginMatch = priorLine.match(/^(\s*)\S/u);
+          const parentIndentation = priorMarginMatch ? priorMarginMatch[1] : '';
+          const tabOrSpace = parentIndentation.startsWith('\t') ? '\t' : '  ';
+          const extraIndentation = startIndent ? ' '.repeat(startIndent || 0) : tabOrSpace;
+          const startIndentation = `${parentIndentation}${extraIndentation}`;
 
-          formatted = formatted.replace(/\n/g, `\n${parentIndentation + extraIndentation}`).replace(/\n +\n/g, '\n\n');
-          formatted = `\n${parentIndentation + extraIndentation}${formatted}\n${parentIndentation}`;
+          formatted = formatted
+            .replace(new RegExp(`^${startIndentation}`), '')
+            .replace(new RegExp(`^${parentIndentation}`), '')
+            .replace(new RegExp(eol, 'g'), `${eol}${startIndentation}`)
+            .replace(new RegExp(`${eol}[ \t]+${eol}`, 'g'), `${eol}${eol}`);
+          formatted = `${eol}${startIndentation}${formatted}${eol}${parentIndentation}`;
         }
 
         if (literal !== formatted) {
